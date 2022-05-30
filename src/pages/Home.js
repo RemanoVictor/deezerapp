@@ -1,51 +1,87 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { ARTIST_API } from "../constants";
-import { CORS_BYPASS } from "../constants";
+import { ARTIST_ALBUM, ARTIST_API } from "../constants";
 
-import Search from "../media/images/search.png";
 import AlbumCard from "../components/album_card";
 
 export default function Home() {
+  const [artistId, setArtistId] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
   const [artistData, setArtistData] = useState(undefined);
+  const [albumData, setAlbumData] = useState([]);
+  const [trackList, setTracklist] = useState([]);
+
+  useEffect(() => {
+    if (artistId === undefined) return;
+
+    axios.get(ARTIST_ALBUM + artistId + "/albums").then((albums) => {
+      //   console.log(albums.data.data);
+      setAlbumData(albums.data.data);
+    });
+  }, [artistId]);
+
+  //   const getData = (data) => {
+  //     setTracklist(data);
+  //     console.log(data);
+  //   };
+
+  console.log(trackList);
 
   return (
-    <div>
-      <input
-        type="text"
-        className="searchInput"
-        placeholder="please enter an artist"
-        onChange={(input) => {
-          axios.get(CORS_BYPASS + ARTIST_API + searchQuery).then((data) => {
-            console.log(data.data.data);
-            setArtistData(data.data.data);
-          });
-          setSearchQuery(input.target.value);
-          console.log(input.target.value);
-        }}
-      />
-      <img src={Search} alt="search icon" width="10px" height="10px" />
+    <div className="mainDiv">
+      <div className="searchDiv">
+        <form>
+          <input
+            type="text"
+            className="searchInput"
+            placeholder="Search here"
+            autoComplete="true"
+            onChange={(input) => {
+              setSearchQuery(input.target.value);
+            }}
+          />
+        </form>
+        <button
+          aria-label="button"
+          onClick={(e) =>
+            axios.get(ARTIST_API + searchQuery).then((data) => {
+              setArtistId(data.data.data[0].id);
+              setArtistData(data.data.data[0]);
+              e.preventDefault();
+            })
+          }
+        />
 
-      <div>
-        {/* {artistData
-          .filter((artist) => {
-            if (searchQuery === "") {
-              return <p>please search</p>;
-            } else if (
-              artist.title.toLowerCase().includes(searchQuery.toLowerCase())
-            ) {
-              return artist;
-            }
-          })
-          .map((artist, index) => (
-            <div className="box" key={index}>
-              <p>{artist.title}</p>
-              <p>{artist.author}</p>
-            </div>
-          ))} */}
+        {searchQuery === "" ? (
+          <h2>Search results for</h2>
+        ) : (
+          <h2>Search results for "{searchQuery}"</h2>
+        )}
       </div>
+
+      <div className="albumsList">
+        <h2>ALBUMS</h2>
+        {albumData !== undefined ? (
+          albumData.map((value, index) => {
+            return (
+              <AlbumCard
+                title={value.title}
+                key={index}
+                img={value.cover_medium}
+                id={value.id}
+                sendTrackData={(trackList) => {
+                  setTracklist(trackList);
+                }}
+              />
+            );
+          })
+        ) : (
+          <p> please search an artist </p>
+        )}
+      </div>
+
+      <div className="albumSpecific">{}</div>
     </div>
   );
 }
