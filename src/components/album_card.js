@@ -3,8 +3,9 @@ import axios from "axios";
 
 import { GET_ALBUMS } from "../constants";
 
-const AlbumCard = ({ title, img, id, sendTrackData, children }) => {
+const AlbumCard = ({ title, img, id, getTracklist }) => {
   const [trackData, setTrackData] = useState([]);
+
   return (
     <div className="cardContainer">
       <div className="imageContainer">
@@ -16,10 +17,10 @@ const AlbumCard = ({ title, img, id, sendTrackData, children }) => {
       </div>
       <button
         onClick={() => {
-          sendTrackData(
+          getTracklist(
             axios.get(GET_ALBUMS + id + "/tracks").then((tracklist) => {
               setTrackData(tracklist.data.data);
-              // console.log(tracklist.data.data);
+              console.log(tracklist.data.data);
             })
           );
         }}

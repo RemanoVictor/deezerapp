@@ -21,12 +21,10 @@ export default function Home() {
     });
   }, [artistId]);
 
-  //   const getData = (data) => {
-  //     setTracklist(data);
-  //     console.log(data);
-  //   };
-
-  console.log(trackList);
+  const getTracklist = (trackList) => {
+    setTracklist(trackList);
+    console.log(trackList);
+  };
 
   return (
     <div className="mainDiv">
@@ -51,7 +49,9 @@ export default function Home() {
               e.preventDefault();
             })
           }
-        />
+        >
+          Search
+        </button>
 
         {searchQuery === "" ? (
           <h2>Search results for</h2>
@@ -70,9 +70,7 @@ export default function Home() {
                 key={index}
                 img={value.cover_medium}
                 id={value.id}
-                sendTrackData={(trackList) => {
-                  setTracklist(trackList);
-                }}
+                getTracklist={getTracklist}
               />
             );
           })
