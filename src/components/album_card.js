@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 
 import { GET_ALBUMS } from "../constants";
 
+import "../scss/albumcard.scss";
+
 const AlbumCard = ({ title, img, id, getTracklist }) => {
-  const [trackData, setTrackData] = useState([]);
+  const getTrackData = () => {
+    axios.get(GET_ALBUMS + id + "/tracks").then((trackData) => {
+      getTracklist(trackData.data.data);
+    });
+  };
 
   return (
     <div className="cardContainer">
@@ -13,20 +19,9 @@ const AlbumCard = ({ title, img, id, getTracklist }) => {
       </div>
 
       <div className="titleContainer">
-        <h2>{title}</h2>
+        <h2>{title.length > 30 ? `${title.substring(0, 30)}...` : title}</h2>
       </div>
-      <button
-        onClick={() => {
-          getTracklist(
-            axios.get(GET_ALBUMS + id + "/tracks").then((tracklist) => {
-              setTrackData(tracklist.data.data);
-              console.log(tracklist.data.data);
-            })
-          );
-        }}
-      >
-        see tracklist
-      </button>
+      <button onClick={getTrackData}>see tracklist</button>
     </div>
   );
 };

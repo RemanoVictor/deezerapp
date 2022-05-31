@@ -1,0 +1,15 @@
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 25%;
+    margin: 3%;
+}
+
+.titleContainer {
+    padding: 1%;
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}

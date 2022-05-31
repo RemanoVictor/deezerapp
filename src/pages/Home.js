@@ -5,6 +5,8 @@ import { ARTIST_ALBUM, ARTIST_API } from "../constants";
 
 import AlbumCard from "../components/album_card";
 
+import "../scss/home.scss";
+
 export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,24 +14,29 @@ export default function Home() {
   const [albumData, setAlbumData] = useState([]);
   const [trackList, setTracklist] = useState([]);
 
+  console.log(trackList);
+
   useEffect(() => {
     if (artistId === undefined) return;
 
     axios.get(ARTIST_ALBUM + artistId + "/albums").then((albums) => {
-      //   console.log(albums.data.data);
       setAlbumData(albums.data.data);
     });
   }, [artistId]);
 
-  const getTracklist = (trackList) => {
-    setTracklist(trackList);
-    console.log(trackList);
-  };
-
   return (
     <div className="mainDiv">
       <div className="searchDiv">
-        <form>
+        <form
+          className="form"
+          onSubmit={(e) =>
+            axios.get(ARTIST_API + searchQuery).then((data) => {
+              setArtistId(data.data.data[0].id);
+              setArtistData(data.data.data[0]);
+              e.preventDefault();
+            })
+          }
+        >
           <input
             type="text"
             className="searchInput"
@@ -41,7 +48,7 @@ export default function Home() {
           />
         </form>
         <button
-          aria-label="button"
+          className="submitButton"
           onClick={(e) =>
             axios.get(ARTIST_API + searchQuery).then((data) => {
               setArtistId(data.data.data[0].id);
@@ -52,16 +59,19 @@ export default function Home() {
         >
           Search
         </button>
+      </div>
 
+      <div className="queryResult">
         {searchQuery === "" ? (
           <h2>Search results for</h2>
         ) : (
           <h2>Search results for "{searchQuery}"</h2>
         )}
       </div>
-
+      <div>
+        <h2 className="albumTitle">ALBUMS</h2>
+      </div>
       <div className="albumsList">
-        <h2>ALBUMS</h2>
         {albumData !== undefined ? (
           albumData.map((value, index) => {
             return (
@@ -70,7 +80,7 @@ export default function Home() {
                 key={index}
                 img={value.cover_medium}
                 id={value.id}
-                getTracklist={getTracklist}
+                getTracklist={setTracklist}
               />
             );
           })
@@ -78,8 +88,9 @@ export default function Home() {
           <p> please search an artist </p>
         )}
       </div>
+      <span className="underline"></span>
 
-      <div className="albumSpecific">{}</div>
+      <div className="albumSpecific"></div>
     </div>
   );
 }

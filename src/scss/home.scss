@@ -1,0 +1,66 @@
+.mainDiv {
+    background: rgb(18, 23, 28);
+    height: 300vh;
+    color: rgba($color: #fff, $alpha: 0.9);
+
+    .searchDiv {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        padding: 5% 0;
+        width: 85%;
+        margin: auto;
+
+        .form {
+            width: 100%;
+            margin: auto;
+        }
+
+        .searchInput {
+            padding: 3%;
+            width: 90%;
+            background-color: rgb(23, 29, 35);
+            border: none;
+            font-size: 1.5em;
+            border-radius: 3%;
+            color: rgba($color: #fff, $alpha: 0.9);
+        }
+
+        .searchInput:focus-visible {
+            border: none;
+        }
+
+        .submitButton {
+            padding: 2%;
+            width: 20%;
+            margin-left: 2%;
+            font-size: 1.5em;
+            background-color: rgb(87, 212, 249);
+            border-radius: 3%;
+            border: none;
+        }
+    }
+
+    .queryResult {
+        width: 85%;
+        margin: 2% auto;
+        border-bottom: 2px solid rgba(256, 256, 256, 0.1);
+
+    }
+
+    .albumTitle {
+        width: 85%;
+        margin: 2% auto;
+    }
+
+    .albumsList {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        width: 85%;
+        margin: auto;
+    }
+}
