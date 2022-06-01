@@ -3,6 +3,15 @@
     height: 300vh;
     color: rgba($color: #fff, $alpha: 0.9);
 
+
+
+    li {
+        list-style-type: none;
+        text-align: left;
+    }
+
+
+
     .searchDiv {
         display: flex;
         flex-direction: row;
@@ -67,5 +76,41 @@
         align-content: center;
         width: 85%;
         margin: auto;
+    }
+
+    .albumSpecific {
+        width: 80%;
+        margin: 10% auto;
+
+        .specificDetails {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+
+            h2 {
+                margin: 2% 5%;
+            }
+
+        }
+
+        .tableHeader {
+            display: flex;
+            flex-direction: row;
+            align-content: center;
+            justify-content: space-between;
+        }
+
+        .test {
+            display: flex;
+            flex-direction: row;
+            // align-content: center;
+            // justify-content: space-evenly;
+        }
+
+        .name {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
     }
 }

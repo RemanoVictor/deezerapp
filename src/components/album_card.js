@@ -5,10 +5,10 @@ import { GET_ALBUMS } from "../constants";
 
 import "../scss/albumcard.scss";
 
-const AlbumCard = ({ title, img, id, getTracklist }) => {
+const AlbumCard = ({ title, img, id, getAlbumData }) => {
   const getTrackData = () => {
-    axios.get(GET_ALBUMS + id + "/tracks").then((trackData) => {
-      getTracklist(trackData.data.data);
+    axios.get(GET_ALBUMS + id).then((trackData) => {
+      getAlbumData(trackData.data);
     });
   };
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { ARTIST_ALBUM, ARTIST_API } from "../constants";
 
 import AlbumCard from "../components/album_card";
+import TrackTable from "../components/trackTable";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -14,8 +15,8 @@ export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
   const [artistData, setArtistData] = useState(undefined);
-  const [albumData, setAlbumData] = useState([]);
-  const [trackList, setTracklist] = useState([]);
+  const [albumList, setAlbumList] = useState([]);
+  const [albumData, setAlbumData] = useState(undefined);
 
   const responsive = {
     superLargeDesktop: {
@@ -37,13 +38,14 @@ export default function Home() {
     },
   };
 
-  //   console.log(trackList);
+  console.log(albumData, "albumData");
 
   useEffect(() => {
     if (artistId === undefined) return;
 
     axios.get(ARTIST_ALBUM + artistId + "/albums").then((albums) => {
-      setAlbumData(albums.data.data);
+      setAlbumList(albums.data.data);
+      console.log(albums.data.data);
     });
   }, [artistId]);
 
@@ -83,7 +85,6 @@ export default function Home() {
           Search
         </button>
       </div>
-
       <div className="queryResult">
         {searchQuery === "" ? (
           <h2>Search results for</h2>
@@ -100,15 +101,15 @@ export default function Home() {
           autoPlay={false}
           className="albumCarousel"
         >
-          {albumData !== undefined ? (
-            albumData.map((value, index) => {
+          {albumList !== undefined ? (
+            albumList.map((value, index) => {
               return (
                 <AlbumCard
                   title={value.title}
                   key={index}
                   img={value.cover_medium}
                   id={value.id}
-                  getTracklist={setTracklist}
+                  getAlbumData={setAlbumData}
                 />
               );
             })
@@ -119,7 +120,49 @@ export default function Home() {
       </div>
       <span className="underline"></span>
 
-      <div className="albumSpecific"></div>
+      <div className="albumSpecific">
+        <div className="specificDetails">
+          {albumData !== undefined ? (
+            <img src={albumData.cover_medium} alt="album cover" />
+          ) : (
+            <p></p>
+          )}
+
+          {albumData !== undefined ? <h2>{albumData.title}</h2> : <p></p>}
+          {console.log(albumData)}
+        </div>
+        <div className="test">
+          {albumData !== undefined ? (
+            <div className="tableHeader">
+              <p>Title</p>
+              <p>Artist</p>
+              <p>Time</p>
+              {/* <p>Released</p> */}
+            </div>
+          ) : (
+            <p></p>
+          )}
+
+          {albumData !== undefined ? (
+            albumData.tracks.data.map((value, index) => {
+              return (
+                // <TrackTable
+                //   key={index}
+                //   title={value.title}
+                //   artist={value.artist.name}
+                // />
+                <ul key={index}>
+                  <li>{value.title}</li>
+                  <li className="name">{value.artist.name}</li>
+                  <li>{value.duration}</li>
+                </ul>
+              );
+            })
+          ) : (
+            <p></p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
