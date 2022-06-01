@@ -5,6 +5,9 @@ import { ARTIST_ALBUM, ARTIST_API } from "../constants";
 
 import AlbumCard from "../components/album_card";
 
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
 import "../scss/home.scss";
 
 export default function Home() {
@@ -14,7 +17,27 @@ export default function Home() {
   const [albumData, setAlbumData] = useState([]);
   const [trackList, setTracklist] = useState([]);
 
-  console.log(trackList);
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
+
+  //   console.log(trackList);
 
   useEffect(() => {
     if (artistId === undefined) return;
@@ -72,21 +95,27 @@ export default function Home() {
         <h2 className="albumTitle">ALBUMS</h2>
       </div>
       <div className="albumsList">
-        {albumData !== undefined ? (
-          albumData.map((value, index) => {
-            return (
-              <AlbumCard
-                title={value.title}
-                key={index}
-                img={value.cover_medium}
-                id={value.id}
-                getTracklist={setTracklist}
-              />
-            );
-          })
-        ) : (
-          <p> please search an artist </p>
-        )}
+        <Carousel
+          responsive={responsive}
+          autoPlay={false}
+          className="albumCarousel"
+        >
+          {albumData !== undefined ? (
+            albumData.map((value, index) => {
+              return (
+                <AlbumCard
+                  title={value.title}
+                  key={index}
+                  img={value.cover_medium}
+                  id={value.id}
+                  getTracklist={setTracklist}
+                />
+              );
+            })
+          ) : (
+            <p> please search an artist </p>
+          )}
+        </Carousel>
       </div>
       <span className="underline"></span>
 
