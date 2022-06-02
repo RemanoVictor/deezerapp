@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { ARTIST_ALBUM, ARTIST_API } from "../constants";
+import { ARTIST_ALBUM, ARTIST_API, CORS } from "../constants";
 
 import AlbumCard from "../components/album_card";
-import TrackTable from "../components/trackTable";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import "../scss/home.scss";
+import TrackTable from "../components/trackTable";
 
 export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
@@ -20,7 +20,6 @@ export default function Home() {
 
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 5,
     },
@@ -38,8 +37,6 @@ export default function Home() {
     },
   };
 
-  console.log(albumData, "albumData");
-
   useEffect(() => {
     if (artistId === undefined) return;
 
@@ -49,19 +46,26 @@ export default function Home() {
     });
   }, [artistId]);
 
+  function handleSearch(e) {
+    axios.get(ARTIST_API + searchQuery).then((data) => {
+      setArtistId(data.data.data[0].id);
+      setArtistData(data.data.data[0]);
+      e.preventDefault();
+    });
+  }
+
+  function addStr(str, index, stringToAdd) {
+    return (
+      str.substring(0, index) + stringToAdd + str.substring(index, str.length)
+    );
+  }
+
   return (
     <div className="mainDiv">
+      {/* Search input code */}
+
       <div className="searchDiv">
-        <form
-          className="form"
-          onSubmit={(e) =>
-            axios.get(ARTIST_API + searchQuery).then((data) => {
-              setArtistId(data.data.data[0].id);
-              setArtistData(data.data.data[0]);
-              e.preventDefault();
-            })
-          }
-        >
+        <form className="form">
           <input
             type="text"
             className="searchInput"
@@ -72,19 +76,12 @@ export default function Home() {
             }}
           />
         </form>
-        <button
-          className="submitButton"
-          onClick={(e) =>
-            axios.get(ARTIST_API + searchQuery).then((data) => {
-              setArtistId(data.data.data[0].id);
-              setArtistData(data.data.data[0]);
-              e.preventDefault();
-            })
-          }
-        >
+
+        <button className="submitButton" onClick={handleSearch}>
           Search
         </button>
       </div>
+
       <div className="queryResult">
         {searchQuery === "" ? (
           <h2>Search results for</h2>
@@ -92,9 +89,13 @@ export default function Home() {
           <h2>Search results for "{searchQuery}"</h2>
         )}
       </div>
+
+      {/* Album display  */}
+
       <div>
         <h2 className="albumTitle">ALBUMS</h2>
       </div>
+
       <div className="albumsList">
         <Carousel
           responsive={responsive}
@@ -120,48 +121,94 @@ export default function Home() {
       </div>
       <span className="underline"></span>
 
+      {/* Album Tracklist */}
+
       <div className="albumSpecific">
-        <div className="specificDetails">
-          {albumData !== undefined ? (
-            <img src={albumData.cover_medium} alt="album cover" />
-          ) : (
-            <p></p>
-          )}
+        {albumData !== undefined ? (
+          (console.log(albumData, "album data"),
+          (
+            <>
+              <div className="albumSpecific_Details">
+                <img
+                  src={albumData.cover_medium}
+                  alt="album cover"
+                  width="34%"
+                  height="auto"
+                />
+                <h2>{albumData.title}</h2>
+              </div>
 
-          {albumData !== undefined ? <h2>{albumData.title}</h2> : <p></p>}
-          {console.log(albumData)}
-        </div>
-        <div className="test">
-          {albumData !== undefined ? (
-            <div className="tableHeader">
-              <p>Title</p>
-              <p>Artist</p>
-              <p>Time</p>
-              {/* <p>Released</p> */}
-            </div>
-          ) : (
-            <p></p>
-          )}
+              <div className="albumSpecific_tableContainer">
+                <div className="albumSpecific_tableContainer_tableHeader">
+                  <p>Title</p>
+                  <p>Artist</p>
+                  <p>Time</p>
+                  {/* <p>Released</p> */}
+                </div>
 
-          {albumData !== undefined ? (
-            albumData.tracks.data.map((value, index) => {
-              return (
-                // <TrackTable
-                //   key={index}
-                //   title={value.title}
-                //   artist={value.artist.name}
-                // />
-                <ul key={index}>
-                  <li>{value.title}</li>
-                  <li className="name">{value.artist.name}</li>
-                  <li>{value.duration}</li>
-                </ul>
-              );
-            })
-          ) : (
-            <p></p>
-          )}
-        </div>
+                {/* {axios.get(CORS + albumData.tracklist).then((tracks) => {
+                  tracks.data.data.data.map((value, index) => {
+                    return (
+                      <div
+                        className="albumSpecific_tableContainer_trackTable"
+                        key={index}
+                      >
+                        <li
+                          className="albumSpecific_tableContainer_diskNumber
+                          albumItem"
+                        >
+                          {value.disk_number}
+                        </li>
+                        <li className="albumSpecific_tableContainer_songTitle albumItem">
+                          {value.title_short}
+                        </li>
+                        <li className="albumSpecific_tableContainer_artistName albumItem">
+                          {value.artist.name}
+                        </li>
+
+                        <li className="albumSpecific_tableContainer_trackDuration albumItem">
+                          {addStr(value.duration.toString(), 1, ":")}
+                        </li>
+                      </div>
+                    );
+                  });
+                })} */}
+
+                {albumData.tracks.data.map((value, index) => {
+                  console.log(albumData.tracks.data);
+                  return (
+                    <div
+                      className="albumSpecific_tableContainer_trackTable"
+                      key={index}
+                    >
+                      <div className="trackContainer">
+                        {/* <li
+                          className="albumSpecific_tableContainer_diskNumber
+                          albumItem"
+                        >
+                          {value.disk_number}
+                        </li> */}
+                        <li className="albumSpecific_tableContainer_songTitle albumItem">
+                          {value.title_short}
+                        </li>
+                        <li className="albumSpecific_tableContainer_artistName albumItem">
+                          {value.artist.name}
+                        </li>
+                        <li className="albumSpecific_tableContainer_trackDuration albumItem">
+                          {value.duration > 100
+                            ? addStr(value.duration.toString(), 1, ":")
+                            : addStr(value.duration.toString(), 0, "0:")}
+                        </li>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ))
+        ) : (
+          <p></p>
+        )}
       </div>
     </div>
   );
