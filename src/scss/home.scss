@@ -1,15 +1,11 @@
 .mainDiv {
     background: rgb(18, 23, 28);
-    height: 300vh;
+    height: 7000px;
     color: rgba($color: #fff, $alpha: 0.9);
-
-
 
     li {
         list-style-type: none;
     }
-
-
 
     .searchDiv {
         display: flex;
@@ -34,10 +30,6 @@
             color: rgba($color: #fff, $alpha: 0.9);
         }
 
-        .searchInput:focus-visible {
-            border: none;
-        }
-
         .submitButton {
             padding: 2%;
             width: 20%;
@@ -56,11 +48,6 @@
 
     }
 
-    .albumCarousel {
-        width: 100%;
-        margin: auto;
-    }
-
     .albumTitle {
         width: 85%;
         margin: 2% auto;
@@ -68,6 +55,7 @@
         font-size: 2.5em;
         font-weight: 300;
     }
+
 
     .albumsList {
         display: flex;
@@ -78,12 +66,19 @@
         align-content: center;
         width: 85%;
         margin: auto;
+
+        .albumCarousel {
+            width: 100%;
+            margin: auto;
+        }
     }
 
     .albumSpecific {
         width: 80%;
         margin: 10% auto;
         position: relative;
+
+        // img {}
 
         .albumSpecific_Details {
             display: flex;
@@ -105,9 +100,9 @@
             background-color: rgba(256, 256, 256, 0.1);
             width: 80%;
             margin: auto;
-            top: 50px;
+            top: 100px;
             position: absolute;
-            padding-left: 27%;
+            padding-left: 17%;
 
             .albumSpecific_tableContainer_tableHeader {
                 background: rgb(18, 23, 28);
@@ -115,29 +110,31 @@
                 flex-direction: row;
                 align-content: center;
                 justify-content: space-between;
-                padding: 1%;
+                padding: 2% 10% 2% 1%;
             }
 
             .albumSpecific_tableContainer_trackTable {
-
-                // display: flex;
-                // flex-direction: row;
-                // justify-content: space-between;
                 border-bottom: 1px solid black;
 
                 .trackContainer {
                     display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
+
+                    li {
+                        font-size: 1.2em;
+                        width: 80%;
+                        padding: 2% 10% 2% 1%;
+                    }
+
 
                 }
 
-                .albumSpecific_tableContainer_songTitle {}
+                .albumSpecific_tableContainer_songTitle {
+                    margin-right: 20%;
+                }
 
-                .albumSpecific_tableContainer_artistName {
+                .albumSpecific_tableContainer_trackDuration {
+                    text-align: right;
 
-                    justify-content: center;
-                    align-content: center;
                 }
 
                 .albumItem {

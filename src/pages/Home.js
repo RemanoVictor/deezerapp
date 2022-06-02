@@ -15,8 +15,9 @@ export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
   const [artistData, setArtistData] = useState(undefined);
-  const [albumList, setAlbumList] = useState([]);
+  const [albumList, setAlbumList] = useState(undefined);
   const [albumData, setAlbumData] = useState(undefined);
+  //   const [tracklist, setTracklist] = useState([]);
 
   const responsive = {
     superLargeDesktop: {
@@ -46,12 +47,15 @@ export default function Home() {
     });
   }, [artistId]);
 
-  function handleSearch(e) {
-    axios.get(ARTIST_API + searchQuery).then((data) => {
-      setArtistId(data.data.data[0].id);
-      setArtistData(data.data.data[0]);
-      e.preventDefault();
-    });
+  function handleSearch() {
+    try {
+      axios.get(ARTIST_API + searchQuery).then((data) => {
+        setArtistId(data.data.data[0].id);
+        setArtistData(data.data.data[0]);
+      });
+    } finally {
+      console.log("something went wrong");
+    }
   }
 
   function addStr(str, index, stringToAdd) {
@@ -77,7 +81,7 @@ export default function Home() {
           />
         </form>
 
-        <button className="submitButton" onClick={handleSearch}>
+        <button className="submitButton" onClick={handleSearch} type="submit">
           Search
         </button>
       </div>
@@ -91,10 +95,15 @@ export default function Home() {
       </div>
 
       {/* Album display  */}
-
-      <div>
-        <h2 className="albumTitle">ALBUMS</h2>
-      </div>
+      {albumList === undefined ? (
+        <div>
+          <h2 className="albumTitle"> Please search for an artist... </h2>
+        </div>
+      ) : (
+        <div>
+          <h2 className="albumTitle">ALBUMS</h2>
+        </div>
+      )}
 
       <div className="albumsList">
         <Carousel
@@ -115,7 +124,7 @@ export default function Home() {
               );
             })
           ) : (
-            <p> please search an artist </p>
+            <p></p>
           )}
         </Carousel>
       </div>
@@ -129,12 +138,7 @@ export default function Home() {
           (
             <>
               <div className="albumSpecific_Details">
-                <img
-                  src={albumData.cover_medium}
-                  alt="album cover"
-                  width="34%"
-                  height="auto"
-                />
+                <img src={albumData.cover_medium} alt="album cover" />
                 <h2>{albumData.title}</h2>
               </div>
 
@@ -146,13 +150,48 @@ export default function Home() {
                   {/* <p>Released</p> */}
                 </div>
 
-                {/* {axios.get(CORS + albumData.tracklist).then((tracks) => {
-                  tracks.data.data.data.map((value, index) => {
-                    return (
-                      <div
-                        className="albumSpecific_tableContainer_trackTable"
-                        key={index}
-                      >
+                {/* test code that runs another API call to display track details from within albumData */}
+
+                {/* <div>
+                  {axios.get(CORS + albumData.tracklist).then((tracks) => {
+                    setTracklist(tracks.data.data);
+
+                    return tracklist.map((value, index) => {
+                      return (
+                        <div
+                          className="albumSpecific_tableContainer_trackTable"
+                          key={index}
+                        >
+                          <li
+                            className="albumSpecific_tableContainer_diskNumber
+                              albumItem"
+                          >
+                            {value.disk_number}
+                          </li>
+                          <li className="albumSpecific_tableContainer_songTitle albumItem">
+                            {value.title_short}
+                          </li>
+                          <li className="albumSpecific_tableContainer_artistName albumItem">
+                            {value.artist.name}
+                          </li>
+
+                          <li className="albumSpecific_tableContainer_trackDuration albumItem">
+                            {addStr(value.duration.toString(), 1, ":")}
+                          </li>
+                        </div>
+                      );
+                    });
+                  })}
+                </div> */}
+
+                {albumData.tracks.data.map((value, index) => {
+                  console.log(albumData.tracks.data);
+                  return (
+                    <div
+                      className="albumSpecific_tableContainer_trackTable"
+                      key={index}
+                    >
+                      {/* <ul className="trackContainer">
                         <li
                           className="albumSpecific_tableContainer_diskNumber
                           albumItem"
@@ -165,22 +204,13 @@ export default function Home() {
                         <li className="albumSpecific_tableContainer_artistName albumItem">
                           {value.artist.name}
                         </li>
-
                         <li className="albumSpecific_tableContainer_trackDuration albumItem">
-                          {addStr(value.duration.toString(), 1, ":")}
+                          {value.duration > 100
+                            ? addStr(value.duration.toString(), 1, ":")
+                            : addStr(value.duration.toString(), 0, "0:")}
                         </li>
-                      </div>
-                    );
-                  });
-                })} */}
+                      </ul> */}
 
-                {albumData.tracks.data.map((value, index) => {
-                  console.log(albumData.tracks.data);
-                  return (
-                    <div
-                      className="albumSpecific_tableContainer_trackTable"
-                      key={index}
-                    >
                       <div className="trackContainer">
                         {/* <li
                           className="albumSpecific_tableContainer_diskNumber

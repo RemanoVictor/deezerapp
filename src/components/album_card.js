@@ -21,7 +21,9 @@ const AlbumCard = ({ title, img, id, getAlbumData }) => {
       <div className="titleContainer">
         <h2>{title.length > 30 ? `${title.substring(0, 30)}...` : title}</h2>
       </div>
-      <button onClick={getTrackData}>see tracklist</button>
+      <button className="seeTracklist" onClick={getTrackData}>
+        View tracklist
+      </button>
     </div>
   );
 };
