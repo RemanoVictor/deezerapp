@@ -13,7 +13,6 @@ import "../scss/home.scss";
 export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
-  const [artistData, setArtistData] = useState(undefined);
   const [albumList, setAlbumList] = useState(undefined);
   const [albumData, setAlbumData] = useState(undefined);
   const [tracklist, setTracklist] = useState(undefined);
@@ -59,7 +58,6 @@ export default function Home() {
     try {
       axios.get(ARTIST_API + searchQuery).then((data) => {
         setArtistId(data.data.data[0].id);
-        setArtistData(data.data.data[0]);
       });
     } finally {
       console.log("something went wrong");
