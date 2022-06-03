@@ -21,7 +21,7 @@
         }
 
         .searchInput {
-            padding: 3%;
+            padding: 2%;
             width: 90%;
             background-color: rgb(23, 29, 35);
             border: none;
@@ -31,13 +31,18 @@
         }
 
         .submitButton {
-            padding: 2%;
+            padding: 0.9%;
             width: 20%;
-            margin-left: 2%;
             font-size: 1.5em;
             background-color: rgb(87, 212, 249);
             border-radius: 3%;
             border: none;
+
+        }
+
+        .submitButton:hover {
+            cursor: pointer;
+            border: 3px solid white;
         }
     }
 

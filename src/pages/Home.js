@@ -96,7 +96,7 @@ export default function Home() {
 
       <div className="queryResult">
         {searchQuery === "" ? (
-          <h2>Search results for</h2>
+          <p></p>
         ) : (
           <h2>Search results for "{searchQuery}"</h2>
         )}
