@@ -48,6 +48,7 @@ export default function Home() {
   }, [artistId]);
 
   function handleSearch() {
+    setAlbumData(undefined);
     try {
       axios.get(ARTIST_API + searchQuery).then((data) => {
         setArtistId(data.data.data[0].id);
@@ -191,27 +192,7 @@ export default function Home() {
                       className="albumSpecific_tableContainer_trackTable"
                       key={index}
                     >
-                      {/* <ul className="trackContainer">
-                        <li
-                          className="albumSpecific_tableContainer_diskNumber
-                          albumItem"
-                        >
-                          {value.disk_number}
-                        </li>
-                        <li className="albumSpecific_tableContainer_songTitle albumItem">
-                          {value.title_short}
-                        </li>
-                        <li className="albumSpecific_tableContainer_artistName albumItem">
-                          {value.artist.name}
-                        </li>
-                        <li className="albumSpecific_tableContainer_trackDuration albumItem">
-                          {value.duration > 100
-                            ? addStr(value.duration.toString(), 1, ":")
-                            : addStr(value.duration.toString(), 0, "0:")}
-                        </li>
-                      </ul> */}
-
-                      <div className="trackContainer">
+                      <ul className="trackContainer">
                         {/* <li
                           className="albumSpecific_tableContainer_diskNumber
                           albumItem"
@@ -229,7 +210,7 @@ export default function Home() {
                             ? addStr(value.duration.toString(), 1, ":")
                             : addStr(value.duration.toString(), 0, "0:")}
                         </li>
-                      </div>
+                      </ul>
                     </div>
                   );
                 })}

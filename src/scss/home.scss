@@ -110,11 +110,13 @@
                 flex-direction: row;
                 align-content: center;
                 justify-content: space-between;
-                padding: 2% 10% 2% 1%;
+                padding: 2% 10% 2% 10%;
+                width: 80%;
             }
 
             .albumSpecific_tableContainer_trackTable {
                 border-bottom: 1px solid black;
+                padding-left: 5%;
 
                 .trackContainer {
                     display: flex;

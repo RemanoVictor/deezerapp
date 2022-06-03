@@ -16,7 +16,7 @@ You may also see any lint errors in the console.
 
 ### `lcp --proxyUrl https://api.deezer.com`
 
-to start a cors server locally
+to start a cors server locally.
 
 ### `npm test`
 
