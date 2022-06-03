@@ -6,7 +6,7 @@ import { GET_ALBUMS } from "../constants";
 import "../scss/albumcard.scss";
 
 const AlbumCard = ({ title, img, id, getAlbumData }) => {
-  const getTrackData = () => {
+  const getTrackData = async () => {
     axios.get(GET_ALBUMS + id).then((trackData) => {
       getAlbumData(trackData.data);
     });

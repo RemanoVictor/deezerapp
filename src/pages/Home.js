@@ -48,12 +48,18 @@ export default function Home() {
     });
   }, [artistId]);
 
+  useEffect(() => {
+    if (albumData === undefined) return;
+
+    axios.get(CORS + albumData.tracklist).then((data) => {
+      setTracklist(data.data.data);
+    });
+  }, [albumData]);
+
   function handleSearch() {
     setAlbumData(undefined);
     try {
       axios.get(ARTIST_API + searchQuery).then((data) => {
-        setQuerySuggestion(data.data.data);
-        console.log(data.data.data);
         setArtistId(data.data.data[0].id);
         setArtistData(data.data.data[0]);
       });
@@ -65,7 +71,6 @@ export default function Home() {
   function handleChange(input) {
     axios.get(ARTIST_API + searchQuery).then((data) => {
       setQuerySuggestion(data.data.data);
-      console.log(data.data.data);
     });
     setSearchQuery(input.target.value);
   }
@@ -98,18 +103,7 @@ export default function Home() {
             searchQuery !== undefined ? (
               querySuggestion.map((value, index) => {
                 return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      console.log(value.name);
-                      return value.name === searchQuery
-                        ? setSearchQuery(value.name)
-                        : searchQuery;
-
-                      //   setSearchQuery(value.name);
-                    }}
-                    className="suggestionList"
-                  >
+                  <li key={index} className="suggestionList">
                     {value.name}
                   </li>
                 );
@@ -173,38 +167,40 @@ export default function Home() {
 
       <div className="albumSpecific">
         {albumData !== undefined ? (
-          (console.log(albumData, "album data"),
-          (
-            <>
-              <div className="albumSpecific_Details">
-                <img src={albumData.cover_medium} alt="album cover" />
-                <div className="albumName_Artist">
-                  <h2>{albumData.artist.name}</h2>
-                  <h3>{albumData.title}</h3>
-                </div>
+          //   console.log(albumData, "album data"),
+          <>
+            <div className="albumSpecific_Details">
+              <img src={albumData.cover_medium} alt="album cover" />
+              <div className="albumName_Artist">
+                <h2>{albumData.artist.name}</h2>
+                <h3>{albumData.title}</h3>
+              </div>
+            </div>
+
+            <div className="albumSpecific_tableContainer">
+              <div className="albumSpecific_tableContainer_tableHeader">
+                <p>#</p>
+                <p>Title</p>
+                <p>Artist</p>
+                <p>duration</p>
+                <p>released</p>
               </div>
 
-              <div className="albumSpecific_tableContainer">
-                <div className="albumSpecific_tableContainer_tableHeader">
-                  <p>Title</p>
-                  <p>Artist</p>
-                  <p>Time</p>
-                </div>
-
-                {albumData.tracks.data.map((value, index) => {
-                  console.log(albumData.tracks.data);
+              {tracklist !== undefined ? (
+                tracklist.map((value, index) => {
+                  //   console.log(albumData.tracks.data);
                   return (
                     <div
                       className="albumSpecific_tableContainer_trackTable"
                       key={index}
                     >
                       <ul className="trackContainer">
-                        {/* <li
+                        <li
                           className="albumSpecific_tableContainer_diskNumber
                           albumItem"
                         >
-                          {value.disk_number}
-                        </li> */}
+                          {value.track_position}
+                        </li>
                         <li className="albumSpecific_tableContainer_songTitle albumItem">
                           {value.title_short}
                         </li>
@@ -216,13 +212,16 @@ export default function Home() {
                             ? addStr(value.duration.toString(), 1, ":")
                             : addStr(value.duration.toString(), 0, "0:")}
                         </li>
+                        <li>{albumData.release_date}</li>
                       </ul>
                     </div>
                   );
-                })}
-              </div>
-            </>
-          ))
+                })
+              ) : (
+                <p></p>
+              )}
+            </div>
+          </>
         ) : (
           <p></p>
         )}
