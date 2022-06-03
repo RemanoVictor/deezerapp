@@ -114,28 +114,6 @@ export default function Home() {
       )}
 
       <div className="albumsList">
-        {/* <Carousel
-          responsive={responsive}
-          autoPlay={false}
-          className="albumCarousel"
-        >
-          {albumList !== undefined ? (
-            albumList.map((value, index) => {
-              return (
-                <AlbumCard
-                  title={value.title}
-                  key={index}
-                  img={value.cover_medium}
-                  id={value.id}
-                  getAlbumData={setAlbumData}
-                />
-              );
-            })
-          ) : (
-            <p></p>
-          )}
-        </Carousel> */}
-
         {albumList !== undefined ? (
           albumList.map((value, index) => {
             return (
