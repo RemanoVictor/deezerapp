@@ -15,6 +15,12 @@
         width: 85%;
         margin: auto;
 
+        .searchFormContainer {
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+        }
+
         .form {
             width: 100%;
             margin: auto;

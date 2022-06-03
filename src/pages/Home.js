@@ -4,9 +4,11 @@ import axios from "axios";
 import { ARTIST_ALBUM, ARTIST_API, CORS } from "../constants";
 
 import AlbumCard from "../components/album_card";
+import Suggestions from "../components/querySuggestion";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import "../scss/querySuggestion.scss";
 
 import "../scss/home.scss";
 import TrackTable from "../components/trackTable";
@@ -17,7 +19,8 @@ export default function Home() {
   const [artistData, setArtistData] = useState(undefined);
   const [albumList, setAlbumList] = useState(undefined);
   const [albumData, setAlbumData] = useState(undefined);
-  //   const [tracklist, setTracklist] = useState([]);
+  const [tracklist, setTracklist] = useState(undefined);
+  const [querySuggestion, setQuerySuggestion] = useState(undefined);
 
   const responsive = {
     superLargeDesktop: {
@@ -43,7 +46,6 @@ export default function Home() {
 
     axios.get(ARTIST_ALBUM + artistId + "/albums").then((albums) => {
       setAlbumList(albums.data.data);
-      console.log(albums.data.data);
     });
   }, [artistId]);
 
@@ -51,12 +53,22 @@ export default function Home() {
     setAlbumData(undefined);
     try {
       axios.get(ARTIST_API + searchQuery).then((data) => {
+        setQuerySuggestion(data.data.data);
+        console.log(data.data.data);
         setArtistId(data.data.data[0].id);
         setArtistData(data.data.data[0]);
       });
     } finally {
       console.log("something went wrong");
     }
+  }
+
+  function handleChange(input) {
+    axios.get(ARTIST_API + searchQuery).then((data) => {
+      setQuerySuggestion(data.data.data);
+      console.log(data.data.data);
+    });
+    setSearchQuery(input.target.value);
   }
 
   function addStr(str, index, stringToAdd) {
@@ -70,17 +82,43 @@ export default function Home() {
       {/* Search input code */}
 
       <div className="searchDiv">
-        <form className="form">
-          <input
-            type="text"
-            className="searchInput"
-            placeholder="Search here"
-            autoComplete="true"
-            onChange={(input) => {
-              setSearchQuery(input.target.value);
-            }}
-          />
-        </form>
+        <div className="searchFormContainer">
+          <form className="form">
+            <input
+              type="text"
+              className="searchInput"
+              placeholder="Search here"
+              autoComplete="true"
+              onChange={handleChange}
+            />
+          </form>
+
+          <ul className="suggestions">
+            {searchQuery.length > 2 &&
+            searchQuery.length % 2 === 0 &&
+            searchQuery !== undefined ? (
+              querySuggestion.map((value, index) => {
+                return (
+                  <li key={index} onClick={handleSearch}>
+                    {value.name}
+                  </li>
+                );
+              })
+            ) : (
+              <p style={{ display: "none" }}></p>
+            )}
+          </ul>
+
+          {/* <ul className="suggestions">
+            {querySuggestion !== undefined ? (
+              querySuggestion.map((value, index) => {
+                return <li key={index}>{value.name}</li>;
+              })
+            ) : (
+              <p></p>
+            )}
+          </ul> */}
+        </div>
 
         <button className="submitButton" onClick={handleSearch} type="submit">
           Search
@@ -193,12 +231,12 @@ export default function Home() {
                       key={index}
                     >
                       <ul className="trackContainer">
-                        {/* <li
+                        <li
                           className="albumSpecific_tableContainer_diskNumber
                           albumItem"
                         >
                           {value.disk_number}
-                        </li> */}
+                        </li>
                         <li className="albumSpecific_tableContainer_songTitle albumItem">
                           {value.title_short}
                         </li>

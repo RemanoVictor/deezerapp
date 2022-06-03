@@ -1,0 +1,11 @@
+   .suggestions {
+       position: absolute;
+       top: 125px;
+       background-color: rgba(000, 000, 000, 0.8);
+       z-index: 99;
+       width: 61%;
+
+       li {
+           padding: 1% 0;
+       }
+   }
