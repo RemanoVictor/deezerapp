@@ -11,7 +11,6 @@ import "react-multi-carousel/lib/styles.css";
 import "../scss/querySuggestion.scss";
 
 import "../scss/home.scss";
-import TrackTable from "../components/trackTable";
 
 export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
@@ -85,21 +84,32 @@ export default function Home() {
         <div className="searchFormContainer">
           <form className="form">
             <input
-              type="text"
+              type="search"
               className="searchInput"
               placeholder="Search here"
-              autoComplete="true"
+              autoComplete="on"
               onChange={handleChange}
             />
           </form>
 
           <ul className="suggestions">
-            {searchQuery.length > 2 &&
+            {searchQuery.length > 3 &&
             searchQuery.length % 2 === 0 &&
             searchQuery !== undefined ? (
               querySuggestion.map((value, index) => {
                 return (
-                  <li key={index} onClick={handleSearch}>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      console.log(value.name);
+                      return value.name === searchQuery
+                        ? setSearchQuery(value.name)
+                        : searchQuery;
+
+                      //   setSearchQuery(value.name);
+                    }}
+                    className="suggestionList"
+                  >
                     {value.name}
                   </li>
                 );
@@ -108,16 +118,6 @@ export default function Home() {
               <p style={{ display: "none" }}></p>
             )}
           </ul>
-
-          {/* <ul className="suggestions">
-            {querySuggestion !== undefined ? (
-              querySuggestion.map((value, index) => {
-                return <li key={index}>{value.name}</li>;
-              })
-            ) : (
-              <p></p>
-            )}
-          </ul> */}
         </div>
 
         <button className="submitButton" onClick={handleSearch} type="submit">
@@ -178,7 +178,10 @@ export default function Home() {
             <>
               <div className="albumSpecific_Details">
                 <img src={albumData.cover_medium} alt="album cover" />
-                <h2>{albumData.title}</h2>
+                <div className="albumName_Artist">
+                  <h2>{albumData.artist.name}</h2>
+                  <h3>{albumData.title}</h3>
+                </div>
               </div>
 
               <div className="albumSpecific_tableContainer">
@@ -186,42 +189,7 @@ export default function Home() {
                   <p>Title</p>
                   <p>Artist</p>
                   <p>Time</p>
-                  {/* <p>Released</p> */}
                 </div>
-
-                {/* test code that runs another API call to display track details from within albumData */}
-
-                {/* <div>
-                  {axios.get(CORS + albumData.tracklist).then((tracks) => {
-                    setTracklist(tracks.data.data);
-
-                    return tracklist.map((value, index) => {
-                      return (
-                        <div
-                          className="albumSpecific_tableContainer_trackTable"
-                          key={index}
-                        >
-                          <li
-                            className="albumSpecific_tableContainer_diskNumber
-                              albumItem"
-                          >
-                            {value.disk_number}
-                          </li>
-                          <li className="albumSpecific_tableContainer_songTitle albumItem">
-                            {value.title_short}
-                          </li>
-                          <li className="albumSpecific_tableContainer_artistName albumItem">
-                            {value.artist.name}
-                          </li>
-
-                          <li className="albumSpecific_tableContainer_trackDuration albumItem">
-                            {addStr(value.duration.toString(), 1, ":")}
-                          </li>
-                        </div>
-                      );
-                    });
-                  })}
-                </div> */}
 
                 {albumData.tracks.data.map((value, index) => {
                   console.log(albumData.tracks.data);
@@ -231,12 +199,12 @@ export default function Home() {
                       key={index}
                     >
                       <ul className="trackContainer">
-                        <li
+                        {/* <li
                           className="albumSpecific_tableContainer_diskNumber
                           albumItem"
                         >
                           {value.disk_number}
-                        </li>
+                        </li> */}
                         <li className="albumSpecific_tableContainer_songTitle albumItem">
                           {value.title_short}
                         </li>
