@@ -9,7 +9,6 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import "../scss/home.scss";
-import TrackTable from "../components/trackTable";
 
 export default function Home() {
   const [artistId, setArtistId] = useState(undefined);
@@ -17,7 +16,6 @@ export default function Home() {
   const [artistData, setArtistData] = useState(undefined);
   const [albumList, setAlbumList] = useState(undefined);
   const [albumData, setAlbumData] = useState(undefined);
-  //   const [tracklist, setTracklist] = useState([]);
 
   const responsive = {
     superLargeDesktop: {
@@ -140,7 +138,10 @@ export default function Home() {
             <>
               <div className="albumSpecific_Details">
                 <img src={albumData.cover_medium} alt="album cover" />
-                <h2>{albumData.title}</h2>
+                <div className="albumName_Artist">
+                  <h2>{albumData.artist.name}</h2>
+                  <h3>{albumData.title}</h3>
+                </div>
               </div>
 
               <div className="albumSpecific_tableContainer">
@@ -148,42 +149,7 @@ export default function Home() {
                   <p>Title</p>
                   <p>Artist</p>
                   <p>Time</p>
-                  {/* <p>Released</p> */}
                 </div>
-
-                {/* test code that runs another API call to display track details from within albumData */}
-
-                {/* <div>
-                  {axios.get(CORS + albumData.tracklist).then((tracks) => {
-                    setTracklist(tracks.data.data);
-
-                    return tracklist.map((value, index) => {
-                      return (
-                        <div
-                          className="albumSpecific_tableContainer_trackTable"
-                          key={index}
-                        >
-                          <li
-                            className="albumSpecific_tableContainer_diskNumber
-                              albumItem"
-                          >
-                            {value.disk_number}
-                          </li>
-                          <li className="albumSpecific_tableContainer_songTitle albumItem">
-                            {value.title_short}
-                          </li>
-                          <li className="albumSpecific_tableContainer_artistName albumItem">
-                            {value.artist.name}
-                          </li>
-
-                          <li className="albumSpecific_tableContainer_trackDuration albumItem">
-                            {addStr(value.duration.toString(), 1, ":")}
-                          </li>
-                        </div>
-                      );
-                    });
-                  })}
-                </div> */}
 
                 {albumData.tracks.data.map((value, index) => {
                   console.log(albumData.tracks.data);
@@ -193,12 +159,6 @@ export default function Home() {
                       key={index}
                     >
                       <ul className="trackContainer">
-                        {/* <li
-                          className="albumSpecific_tableContainer_diskNumber
-                          albumItem"
-                        >
-                          {value.disk_number}
-                        </li> */}
                         <li className="albumSpecific_tableContainer_songTitle albumItem">
                           {value.title_short}
                         </li>

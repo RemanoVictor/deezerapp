@@ -78,8 +78,6 @@
         margin: 10% auto;
         position: relative;
 
-        // img {}
-
         .albumSpecific_Details {
             display: flex;
             flex-direction: row;
@@ -88,9 +86,20 @@
             z-index: 99;
             width: 80%;
 
+            .albumName_Artist {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                align-items: flex-start;
+            }
+
 
             h2 {
                 color: rgb(109, 250, 251);
+                margin: 2% 5%;
+            }
+
+            h3 {
                 margin: 2% 5%;
             }
 
@@ -139,9 +148,6 @@
 
                 }
 
-                .albumItem {
-                    padding: 1.5%;
-                }
 
             }
 
