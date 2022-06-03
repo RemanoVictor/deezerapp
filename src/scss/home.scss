@@ -46,6 +46,11 @@
         margin: 2% auto;
         border-bottom: 2px solid rgba(256, 256, 256, 0.1);
 
+        h2 {
+            font-size: 2.5em;
+            font-weight: 400;
+        }
+
     }
 
     .albumTitle {
@@ -125,22 +130,22 @@
 
             .albumSpecific_tableContainer_trackTable {
                 border-bottom: 1px solid black;
-                padding-left: 5%;
 
                 .trackContainer {
                     display: flex;
+                    padding: 0;
 
                     li {
                         font-size: 1.2em;
                         width: 80%;
-                        padding: 2% 10% 2% 1%;
+                        text-align: center;
                     }
-
 
                 }
 
                 .albumSpecific_tableContainer_songTitle {
-                    margin-right: 20%;
+                    text-align: left !important;
+                    width: 100%;
                 }
 
                 .albumSpecific_tableContainer_trackDuration {

@@ -16,6 +16,7 @@ export default function Home() {
   const [artistData, setArtistData] = useState(undefined);
   const [albumList, setAlbumList] = useState(undefined);
   const [albumData, setAlbumData] = useState(undefined);
+  const [tracklist, setTracklist] = useState(undefined);
 
   const responsive = {
     superLargeDesktop: {
@@ -44,6 +45,14 @@ export default function Home() {
       console.log(albums.data.data);
     });
   }, [artistId]);
+
+  useEffect(() => {
+    if (albumData === undefined) return;
+
+    axios.get(CORS + albumData.tracklist).then((data) => {
+      setTracklist(data.data.data);
+    });
+  }, [albumData]);
 
   function handleSearch() {
     setAlbumData(undefined);
@@ -146,34 +155,43 @@ export default function Home() {
 
               <div className="albumSpecific_tableContainer">
                 <div className="albumSpecific_tableContainer_tableHeader">
+                  <p>#</p>
                   <p>Title</p>
                   <p>Artist</p>
                   <p>Time</p>
+                  <p>Released</p>
                 </div>
 
-                {albumData.tracks.data.map((value, index) => {
-                  console.log(albumData.tracks.data);
-                  return (
-                    <div
-                      className="albumSpecific_tableContainer_trackTable"
-                      key={index}
-                    >
-                      <ul className="trackContainer">
-                        <li className="albumSpecific_tableContainer_songTitle albumItem">
-                          {value.title_short}
-                        </li>
-                        <li className="albumSpecific_tableContainer_artistName albumItem">
-                          {value.artist.name}
-                        </li>
-                        <li className="albumSpecific_tableContainer_trackDuration albumItem">
-                          {value.duration > 100
-                            ? addStr(value.duration.toString(), 1, ":")
-                            : addStr(value.duration.toString(), 0, "0:")}
-                        </li>
-                      </ul>
-                    </div>
-                  );
-                })}
+                {tracklist !== undefined ? (
+                  tracklist.map((value, index) => {
+                    return (
+                      <div
+                        className="albumSpecific_tableContainer_trackTable"
+                        key={index}
+                      >
+                        <ul className="trackContainer">
+                          <li>{value.track_position}</li>
+                          <li className="albumSpecific_tableContainer_songTitle albumItem">
+                            {value.title_short}
+                          </li>
+                          <li className="albumSpecific_tableContainer_artistName albumItem">
+                            {value.artist.name}
+                          </li>
+                          <li className="albumSpecific_tableContainer_trackDuration albumItem">
+                            {value.duration >= 100
+                              ? addStr(value.duration.toString(), 1, ":")
+                              : addStr(value.duration.toString(), 0, "0:")}
+                          </li>
+                          <li>
+                            {albumData.release_date.toString().substring(0, 4)}
+                          </li>
+                        </ul>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <p></p>
+                )}
               </div>
             </>
           ))
