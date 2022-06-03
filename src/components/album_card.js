@@ -20,7 +20,7 @@ const AlbumCard = ({ title, img, id, getAlbumData }) => {
 
       <div className="titleContainer">
         <button className="seeTracklist tooltip" onClick={getTrackData}>
-          <h2>{title.length > 30 ? `${title.substring(0, 20)}...` : title}</h2>
+          <h2>{title.length > 27 ? `${title.substring(0, 10)}...` : title}</h2>
           <span className="tooltiptext">{title}</span>
         </button>
       </div>
