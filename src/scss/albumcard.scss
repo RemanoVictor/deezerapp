@@ -1,10 +1,33 @@
+// .cardContainer {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     width: 80%;
+//     margin: 3%;
+
+//     .seeTracklist {
+//         background: none;
+//         border: none;
+
+//         h2 {
+//             color: rgb(109, 250, 251);
+//         }
+//     }
+
+//     .seeTracklist:hover {
+//         text-decoration: underline white;
+//         cursor: pointer
+//     }
+// }
+
 .cardContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 80%;
-    margin: 3%;
+    width: 15%;
+    margin: 1%;
 
     .seeTracklist {
         background: none;
@@ -16,7 +39,6 @@
     }
 
     .seeTracklist:hover {
-        // border-bottom: 1px solid white;
         text-decoration: underline white;
         cursor: pointer
     }

@@ -114,7 +114,7 @@ export default function Home() {
       )}
 
       <div className="albumsList">
-        <Carousel
+        {/* <Carousel
           responsive={responsive}
           autoPlay={false}
           className="albumCarousel"
@@ -134,7 +134,23 @@ export default function Home() {
           ) : (
             <p></p>
           )}
-        </Carousel>
+        </Carousel> */}
+
+        {albumList !== undefined ? (
+          albumList.map((value, index) => {
+            return (
+              <AlbumCard
+                key={index}
+                title={value.title}
+                img={value.cover_medium}
+                id={value.id}
+                getAlbumData={setAlbumData}
+              />
+            );
+          })
+        ) : (
+          <p></p>
+        )}
       </div>
       <span className="underline"></span>
 
